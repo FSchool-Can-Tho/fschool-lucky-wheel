@@ -101,6 +101,9 @@ function Wheel({ list, onCompleted }) {
   }, [renderSector, list]);
 
   useEffect(() => {
+    let canvas = document.getElementById("wheel");
+    let ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     renderWheel();
   }, [renderWheel]);
 
