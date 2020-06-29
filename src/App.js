@@ -1,10 +1,8 @@
-import React from 'react';
-import Wheel from './components/Wheel';
+import React from "react";
+import Wheel from "./components/Wheel";
 
 function App() {
-  return (
-    <Wheel/>
-  );
+  return <Wheel list={["", "", ""]} onCompleted={(result) => alert(result)} />;
 }
 
 export default App;

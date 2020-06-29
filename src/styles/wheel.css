@@ -2,23 +2,23 @@ body {
   background: linear-gradient(to left, rgb(138, 52, 52), rgb(97, 97, 199));
 }
 
-.App {
+.wheel-wrapper {
   font-family: sans-serif;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
-button {
+#reset, #spin {
   background: none;
   border: 1px solid black;
   font-size: 20px;
   border-radius: 5px;
-}
-
-#spin,
-#reset {
-  position: absolute;
-  bottom: 20vh;
-  right: 45vw;
+  z-index: 3;
+  margin-top: 12px;
 }
 
 #spin:hover {
@@ -31,38 +31,20 @@ button {
   outline: none;
 }
 
-/* #reset {
-    position: absolute;
-    bottom: 20vh;
-    right: 35vw;
-  } */
-
 #reset:hover {
   color: red;
   border-color: red;
 }
 
-#readout {
-  position: absolute;
-  bottom: 7vh;
-  left: 35vw;
-}
-
 #selector {
-  position: absolute;
-  top: 15vh;
-  right: 47.5vw;
+  position: relative;
+  top: -28px;
   font-size: 40px;
   z-index: 3;
+  color: rgb(0, 180, 120);
 }
 
 #result {
   font-size: 50px;
   color: rgb(0, 180, 120);
-}
-
-input {
-  font-size: 16px;
-  border: none;
-  border-bottom: 1px solid black;
 }
