@@ -1,0 +1,29 @@
+.btn-download {
+  color: blue;
+  background-color: lightblue;
+  border: 1px solid white;
+  border-radius: 18px;
+  font-size: 14px;
+  padding: 6px 12px;
+  outline: none;
+}
+
+.btn-download:hover {
+  color: lightblue;
+  background-color: blue;
+}
+
+.btn-clearall {
+  color: red;
+  background-color: lightpink;
+  border: 1px solid white;
+  border-radius: 18px;
+  font-size: 14px;
+  padding: 6px 12px;
+  outline: none;
+}
+
+.btn-clearall:hover {
+  background-color: red;
+  color: lightpink;
+}

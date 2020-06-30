@@ -46,10 +46,10 @@ function Wheel({ list, onCompleted }) {
   );
 
   const getColor = () => {
-    let r = Math.floor(Math.random() * 255);
-    let g = Math.floor(Math.random() * 255);
-    let b = Math.floor(Math.random() * 255);
-    return `rgba(${r},${g},${b},0.4)`;
+    let r = Math.floor(Math.random() * 125);
+    let g = Math.floor(Math.random() * 125);
+    let b = Math.floor(Math.random() * 125);
+    return `rgba(${r + 128},${g + 128},${b + 128}, 0.8)`;
   };
 
   const spin = () => {
@@ -123,15 +123,16 @@ function Wheel({ list, onCompleted }) {
       <div className="display">
         <span id="result">{list[state.result] || "???"}</span>
       </div>
-      {state.spinning ? (
-        <button type="button" id="reset" onClick={reset}>
-          reset
+      <div style={{ position: "absolute" }}>
+        <button
+          type="button"
+          id="spin"
+          onClick={spin}
+          disabled={state.spinning}
+        >
+          <strong>Start</strong>
         </button>
-      ) : (
-        <button type="button" id="spin" onClick={spin}>
-          spin
-        </button>
-      )}
+      </div>
     </div>
   );
 }

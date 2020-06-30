@@ -17,15 +17,19 @@ function AttendeeList({ value, onChange }) {
       style={{
         width: 320,
         color: "white",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <h3>
+      <h3 style={{ marginBottom: 6 }}>
         <strong>Danh sách người tham gia</strong>
       </h3>
       <p
         style={{
           display: "flex",
           justifyContent: "space-between",
+          margin: "6px 0px",
         }}
       >
         <small>Mỗi người trên một dòng.</small>
@@ -39,11 +43,13 @@ function AttendeeList({ value, onChange }) {
           borderRadius: "12px",
           padding: "6px",
           lineHeight: 1.5,
-          height: 500,
+          flexGrow: 1,
+          fontSize: 18,
         }}
         value={attendees}
         onChange={handleAttendeeChange}
-        placeholder="Nhập danh sách người tham gia..."
+        placeholder="Nhập danh sách tham gia..."
+        title="Danh sách tham gia"
       />
     </div>
   );

@@ -6,30 +6,35 @@
   justify-content: center;
   align-items: center;
   position: relative;
+  padding-top: 24px;
 }
 
-#reset, #spin {
-  background: none;
-  border: 1px solid black;
+#spin {
+  color: green;
+  background: lightgreen;
+  border: 1px solid green;
   font-size: 20px;
-  border-radius: 5px;
+  border-radius: 36px;
   z-index: 3;
   margin-top: 12px;
+  position: relative;
+  top: -52px;
+  height: 72px;
+  width: 72px;
 }
 
 #spin:hover {
-  color: rgb(0, 180, 120);
-  border-color: rgb(0, 180, 120);
+  color: lightgreen;
+  background-color: green;
 }
 
-#spin:focus,
-#reset:focus {
+#spin:focus {
   outline: none;
 }
 
-#reset:hover {
-  color: red;
-  border-color: red;
+#spin:disabled {
+  color: lightgreen;
+  background-color: green;
 }
 
 #selector {
@@ -37,10 +42,12 @@
   top: -28px;
   font-size: 40px;
   z-index: 3;
-  color: rgb(0, 180, 120);
+  color: lightgreen;
 }
 
 #result {
   font-size: 50px;
-  color: rgb(0, 180, 120);
+  color: lightgreen;
+  position: relative;
+  top: -32px;
 }

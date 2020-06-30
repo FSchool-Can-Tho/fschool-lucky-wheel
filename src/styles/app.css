@@ -2,3 +2,19 @@ body {
   background: linear-gradient(to left, rgb(138, 52, 52), rgb(97, 97, 199));
   font-family: sans-serif;
 }
+
+table, th, td {
+  border: 1px solid lightgrey;
+  border-collapse: collapse;
+  padding: 6px;
+  color: black;
+}
+
+th {
+  background-color: lightgrey;
+}
+
+table {
+  border-radius: 8px;
+  overflow: hidden;
+}
