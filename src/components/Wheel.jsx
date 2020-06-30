@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "../styles/wheel.css";
 
-function Wheel({ list, onCompleted }) {
+function Wheel({ list, onCompleted, loop }) {
   const [state, setState] = useState({
     radius: 120, // PIXELS
     rotate: 0, // DEGREES

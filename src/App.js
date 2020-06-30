@@ -33,8 +33,12 @@ function App() {
       <AttendeeList value={attendee} onChange={(list) => setAttendee(list)} />
       <Wheel
         list={attendee}
+        loop={prize.count}
         onCompleted={(index) =>
-          setResult([...result, { id: attendee[index], prize: prize.name }])
+          setResult((prevResult) => [
+            ...prevResult,
+            { id: attendee[index], prize: prize.name },
+          ])
         }
       />
       <div
