@@ -23,7 +23,7 @@ function PrizeList({ value, onChange }) {
       </p>
       <div
         style={{
-          display: "flex",
+          display: "flex", 
           flexWrap: "nowrap",
           width: "100%",
         }}

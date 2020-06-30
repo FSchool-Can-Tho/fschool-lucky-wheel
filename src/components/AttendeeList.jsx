@@ -35,22 +35,32 @@ function AttendeeList({ value, onChange }) {
         <small>Mỗi người trên một dòng.</small>
         <small>Đã nhập: {value.length}</small>
       </p>
-      <textarea
+      <div
         style={{
-          width: "100%",
-          backgroundColor: "lightgrey",
-          border: "solid 1px grey",
-          borderRadius: "12px",
-          padding: "6px",
-          lineHeight: 1.5,
           flexGrow: 1,
-          fontSize: 18,
+          borderRadius: "12px",
+          overflow: "hidden",
+          width: "100%",
+          paddingRight: 12,
         }}
-        value={attendees}
-        onChange={handleAttendeeChange}
-        placeholder="Nhập danh sách tham gia..."
-        title="Danh sách tham gia"
-      />
+      >
+        <textarea
+          style={{
+            width: "100%",
+            height: "100%",
+            backgroundColor: "lightgrey",
+            border: "solid 1px grey",
+            padding: "6px",
+            lineHeight: 1.5,
+            fontSize: 18,
+            overflow: "scroll",
+          }}
+          value={attendees}
+          onChange={handleAttendeeChange}
+          placeholder="Nhập danh sách tham gia..."
+          title="Danh sách tham gia"
+        />
+      </div>
     </div>
   );
 }

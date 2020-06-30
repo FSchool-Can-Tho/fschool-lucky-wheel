@@ -1,6 +1,25 @@
 import React from "react";
 import "../styles/result-list.css";
 
+const colors = [
+  {
+    color: "deeppink",
+    backgroundColor: "lightpink",
+  },
+  {
+    color: "darkorange",
+    backgroundColor: "lightyellow",
+  },
+  {
+    color: "dodgerblue",
+    backgroundColor: "lightblue",
+  },
+  {
+    color: "teal",
+    backgroundColor: "lightcyan",
+  },
+];
+
 function ResultList({ data = [], onChange }) {
   const handleDownload = () => {
     if (data.length === 0) return;
@@ -20,6 +39,9 @@ function ResultList({ data = [], onChange }) {
     );
     if (confirm) onChange([]);
   };
+
+  const prizeSet = new Set(data.map(({ prize }) => prize));
+  const prizeList = Array.from(prizeSet);
 
   return (
     <div
@@ -58,12 +80,16 @@ function ResultList({ data = [], onChange }) {
                 color: "black",
                 fontSize: 18,
                 margin: "8px 0px",
+                backgroundColor:
+                  colors[prizeList.indexOf(prize)].backgroundColor,
               }}
             >
               <span
                 style={{
+                  color: "white",
+                  fontSize: 14,
                   padding: "3px 12px",
-                  backgroundColor: "lightgreen",
+                  backgroundColor: colors[prizeList.indexOf(prize)].color,
                   borderRadius: "0px 12px 12px 0px",
                 }}
               >
