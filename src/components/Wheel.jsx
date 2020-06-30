@@ -72,17 +72,6 @@ function Wheel({ list, onCompleted }) {
     }, 2000);
   };
 
-  const reset = () => {
-    // reset wheel and result
-    setState((prevState) => ({
-      ...prevState,
-      rotate: 0,
-      easeOut: 0,
-      result: null,
-      spinning: false,
-    }));
-  };
-
   const renderWheel = useCallback(() => {
     let numOptions = list.length;
     let arcSize = (2 * Math.PI) / numOptions;
@@ -90,6 +79,9 @@ function Wheel({ list, onCompleted }) {
       ...prevState,
       angle: arcSize,
       result: Math.floor(Math.PI / 2 / arcSize),
+      rotate: 0,
+      easeOut: 0,
+      spinning: false,
     }));
 
     let angle = 0;
