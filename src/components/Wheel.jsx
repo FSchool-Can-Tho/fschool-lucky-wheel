@@ -29,7 +29,7 @@ function Wheel({ list, onCompleted }) {
       ctx.lineWidth = radius * 2;
       ctx.strokeStyle = color;
 
-      ctx.font = "17px Arial";
+      ctx.font = "12px Arial";
       ctx.fillStyle = "black";
       ctx.stroke();
 
