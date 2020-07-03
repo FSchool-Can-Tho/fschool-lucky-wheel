@@ -24,6 +24,22 @@ function App() {
     localStorage.setItem("result", JSON.stringify(result));
   }, [attendee, prize, result]);
 
+  const handleResult = (index) => {
+    setResult((prevResult) => [
+      ...prevResult,
+      { id: attendee[index], prize: prize.name },
+    ]);
+    setShowAlert({ id: attendee[index], index });
+  };
+
+  const handleCloseAlert = (index) => {
+    setAttendee([
+      ...attendee.slice(0, index),
+      ...attendee.slice(index + 1, attendee.length),
+    ]);
+    setShowAlert(null);
+  };
+
   return (
     <>
       <div
@@ -34,17 +50,7 @@ function App() {
         }}
       >
         <AttendeeList value={attendee} onChange={(list) => setAttendee(list)} />
-        <Wheel
-          list={attendee}
-          loop={prize.count}
-          onCompleted={(index) => {
-            setResult((prevResult) => [
-              ...prevResult,
-              { id: attendee[index], prize: prize.name },
-            ]);
-            setShowAlert({ id: attendee[index] });
-          }}
-        />
+        <Wheel list={attendee} loop={prize.count} onCompleted={handleResult} />
         <div
           style={{
             display: "flex",
@@ -59,7 +65,7 @@ function App() {
       <ResultAlert
         id={showAlert && showAlert.id}
         show={!!showAlert}
-        onHide={() => setShowAlert(null)}
+        onHide={() => handleCloseAlert(showAlert && showAlert.index)}
         prize={prize.name}
       />
     </>
