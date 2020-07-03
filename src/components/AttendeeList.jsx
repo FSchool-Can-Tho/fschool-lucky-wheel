@@ -16,6 +16,7 @@ function AttendeeList({ value, onChange }) {
     <div
       style={{
         width: 320,
+        minWidth: 320,
         height: "100%",
         display: "flex",
         flexDirection: "column",

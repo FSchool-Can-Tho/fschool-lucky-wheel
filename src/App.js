@@ -47,6 +47,8 @@ function App() {
           display: "flex",
           justifyContent: "space-evenly",
           height: "90vh",
+          paddingRight: 12,
+          paddingLeft: 12,
         }}
       >
         <AttendeeList value={attendee} onChange={(list) => setAttendee(list)} />
@@ -56,6 +58,7 @@ function App() {
             display: "flex",
             flexDirection: "column",
             height: "100%",
+            minWidth: "300px",
           }}
         >
           <PrizeList value={prize} onChange={(value) => setPrize(value)} />

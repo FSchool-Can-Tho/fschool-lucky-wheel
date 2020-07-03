@@ -7,6 +7,8 @@
   align-items: center;
   position: relative;
   padding-top: 24px;
+  flex-grow: 1;
+  overflow: hidden;
 }
 
 #spin {
@@ -51,4 +53,7 @@
   position: relative;
   top: -32px;
   font-weight: bold;
+  text-overflow: clip;
+  word-wrap: none;
+  white-space: nowrap;
 }

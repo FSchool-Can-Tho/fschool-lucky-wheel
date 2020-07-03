@@ -12,6 +12,7 @@ function PrizeList({ value, onChange }) {
     <div
       style={{
         width: 300,
+        minWidth: 300,
       }}
     >
       <h3 style={{ marginBottom: 6 }}>

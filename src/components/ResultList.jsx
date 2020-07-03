@@ -47,6 +47,7 @@ function ResultList({ data = [], onChange }) {
     <div
       style={{
         width: 300,
+        minWidth: 300,
         flexGrow: 1,
         display: "flex",
         flexDirection: "column",
@@ -99,6 +100,7 @@ function ResultList({ data = [], onChange }) {
               <span
                 style={{
                   padding: "3px 6px",
+                  overflowWrap: 'break-word'
                 }}
               >
                 {id}
