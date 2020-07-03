@@ -48,7 +48,6 @@ function ResultList({ data = [], onChange }) {
       style={{
         width: 300,
         flexGrow: 1,
-        color: "white",
         display: "flex",
         flexDirection: "column",
       }}
@@ -67,7 +66,7 @@ function ResultList({ data = [], onChange }) {
           style={{
             width: "100%",
             overflowY: "scroll",
-            backgroundColor: "lightgrey",
+            backgroundColor: "lightgreen",
             flexGrow: 1,
             height: 0,
             minHeight: "100%",

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "../styles/wheel.css";
 
-function Wheel({ list, onCompleted, loop }) {
+function Wheel({ list, onCompleted }) {
   const [state, setState] = useState({
     radius: 120, // PIXELS
     rotate: 0, // DEGREES
@@ -49,7 +49,7 @@ function Wheel({ list, onCompleted, loop }) {
     let r = Math.floor(Math.random() * 125);
     let g = Math.floor(Math.random() * 125);
     let b = Math.floor(Math.random() * 125);
-    return `rgba(${r + 128},${g + 128},${b + 128}, 0.8)`;
+    return `rgba(${r + 100},${g + 100},${b + 100}, 0.8)`;
   };
 
   const spin = () => {

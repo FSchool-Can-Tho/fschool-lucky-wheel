@@ -16,7 +16,6 @@ function AttendeeList({ value, onChange }) {
     <div
       style={{
         width: 320,
-        color: "white",
         height: "100%",
         display: "flex",
         flexDirection: "column",
@@ -48,8 +47,8 @@ function AttendeeList({ value, onChange }) {
           style={{
             width: "100%",
             height: "100%",
-            backgroundColor: "lightgrey",
-            border: "solid 1px grey",
+            backgroundColor: "lightgreen",
+            border: "none",
             padding: "6px",
             lineHeight: 1.5,
             fontSize: 18,

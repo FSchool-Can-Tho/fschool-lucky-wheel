@@ -42,12 +42,13 @@
   top: -28px;
   font-size: 40px;
   z-index: 3;
-  color: lightgreen;
+  color: green;
 }
 
 #result {
   font-size: 50px;
-  color: lightgreen;
+  color: green;
   position: relative;
   top: -32px;
+  font-weight: bold;
 }

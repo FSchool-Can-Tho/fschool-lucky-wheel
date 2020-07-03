@@ -12,18 +12,17 @@ function PrizeList({ value, onChange }) {
     <div
       style={{
         width: 300,
-        color: "white",
       }}
     >
       <h3 style={{ marginBottom: 6 }}>
-        <strong>Cơ cấu giải thưởng</strong>
+        <strong>Giải thưởng</strong>
       </h3>
       <p style={{ margin: "6px 0px" }}>
-        <small>Tùy chỉnh giải thưởng và số lượng giải.</small>
+        <small>Tùy chỉnh giải thưởng</small>
       </p>
       <div
         style={{
-          display: "flex", 
+          display: "flex",
           flexWrap: "nowrap",
           width: "100%",
         }}
@@ -38,8 +37,8 @@ function PrizeList({ value, onChange }) {
             flexGrow: 1,
             padding: 6,
             borderRadius: 8,
-            backgroundColor: "lightgrey",
-            border: "1px solid grey",
+            backgroundColor: "lightgreen",
+            border: "none",
             fontSize: 18,
           }}
         />
@@ -50,6 +49,7 @@ function PrizeList({ value, onChange }) {
           title="Số lượng giải"
           type="number"
           style={{
+            display: "none",
             width: 52,
             padding: 6,
             borderRadius: 8,
