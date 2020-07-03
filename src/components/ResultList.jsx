@@ -80,7 +80,8 @@ function ResultList({ data = [], onChange }) {
                 fontSize: 18,
                 margin: "8px 0px",
                 backgroundColor:
-                  colors[prizeList.indexOf(prize)].backgroundColor,
+                  colors[prizeList.indexOf(prize) % colors.length]
+                    .backgroundColor,
               }}
             >
               <span
@@ -88,7 +89,8 @@ function ResultList({ data = [], onChange }) {
                   color: "white",
                   fontSize: 14,
                   padding: "3px 12px",
-                  backgroundColor: colors[prizeList.indexOf(prize)].color,
+                  backgroundColor:
+                    colors[prizeList.indexOf(prize) % colors.length].color,
                   borderRadius: "0px 12px 12px 0px",
                 }}
               >
