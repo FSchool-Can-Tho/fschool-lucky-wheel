@@ -1,0 +1,67 @@
+.dialog {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  background-color: #00000099;
+  transform: scale(0);
+}
+
+.dialog-content {
+  transform: scale(0);
+  transition: transform 400ms;
+  background-color: white;
+  min-width: 300px;
+  position: relative;
+  top: -64px;
+  border-radius: 32px;
+  box-shadow: 5px 10px 10px #888888;
+  overflow: hidden;
+  text-align: center;
+  padding-bottom: 12px;
+}
+
+.show-up {
+  transform: scale(1);
+}
+
+.close-btn {
+  background-color: lightcyan;
+  padding: 6px 18px;
+  border: none;
+  border-radius: 12px;
+  outline: none;
+  color: green;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.close-btn:hover {
+  color: lightcyan;
+  background-color: green;
+}
+
+.bigtext {
+  font-size: 32px;
+  margin: 12px;
+  font-weight: bold;
+}
+
+.title {
+  margin: 0px;
+  padding: 12px;
+  background: linear-gradient(to right, yellowgreen, green);
+  color: white;
+  text-align: center;
+}
+
+.subtitle {
+  font-weight: bold;
+  margin: 12px;
+  margin-bottom: 18px;
+}

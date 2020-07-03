@@ -18,7 +18,7 @@ function PrizeList({ value, onChange }) {
         <strong>Giải thưởng</strong>
       </h3>
       <p style={{ margin: "6px 0px" }}>
-        <small>Tùy chỉnh giải thưởng</small>
+        <small>Tên giải thưởng</small>
       </p>
       <div
         style={{
