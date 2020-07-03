@@ -13,9 +13,9 @@ function App() {
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
-    setAttendee(JSON.parse(localStorage.getItem("attendee") || "['']"));
-    setPrize(JSON.parse(localStorage.getItem("prize") || "['']"));
-    setResult(JSON.parse(localStorage.getItem("result") || "['']"));
+    setAttendee(JSON.parse(localStorage.getItem("attendee") || "[]"));
+    setPrize(JSON.parse(localStorage.getItem("prize") || "{}"));
+    setResult(JSON.parse(localStorage.getItem("result") || "[]"));
   }, []);
 
   useEffect(() => {
