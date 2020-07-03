@@ -1,7 +1,7 @@
 {
   "name": "lucky-wheel",
   "version": "0.1.0",
-  "xxhomepage": "http://tuyensinhthptcantho.fpt.edu.vn/lucky-spin/",
+  "homepage": "http://tuyensinhthptcantho.fpt.edu.vn/lucky-spin/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",

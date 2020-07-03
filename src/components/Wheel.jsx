@@ -49,7 +49,7 @@ function Wheel({ list, onCompleted }) {
     let r = Math.floor(Math.random() * 125);
     let g = Math.floor(Math.random() * 125);
     let b = Math.floor(Math.random() * 125);
-    return `rgba(${r + 100},${g + 100},${b + 100}, 0.8)`;
+    return `rgba(${r + 120},${g + 120},${b + 120}, 1)`;
   };
 
   const spin = () => {

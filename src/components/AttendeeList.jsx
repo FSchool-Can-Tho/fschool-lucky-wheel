@@ -48,7 +48,7 @@ function AttendeeList({ value, onChange }) {
           style={{
             width: "100%",
             height: "100%",
-            backgroundColor: "lightgreen",
+            backgroundColor: "#FFFFFF99",
             border: "none",
             padding: "6px",
             lineHeight: 1.5,

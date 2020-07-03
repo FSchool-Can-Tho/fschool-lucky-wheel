@@ -38,7 +38,7 @@ function PrizeList({ value, onChange }) {
             flexGrow: 1,
             padding: 6,
             borderRadius: 8,
-            backgroundColor: "lightgreen",
+            backgroundColor: "#FFFFFF99",
             border: "none",
             fontSize: 18,
           }}

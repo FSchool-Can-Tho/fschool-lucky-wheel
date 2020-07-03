@@ -67,7 +67,7 @@ function ResultList({ data = [], onChange }) {
           style={{
             width: "100%",
             overflowY: "scroll",
-            backgroundColor: "lightgreen",
+            backgroundColor: "#FFFFFF99",
             flexGrow: 1,
             height: 0,
             minHeight: "100%",

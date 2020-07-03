@@ -3,6 +3,8 @@ body {
   background-color: #FDFDFD;
   color: blue;
   font-family: sans-serif;
+  background-position: center;
+  background-size: cover;
 }
 
 table, th, td {
