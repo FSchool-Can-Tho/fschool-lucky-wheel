@@ -6,10 +6,10 @@ import PrizeList from "./components/PrizeList";
 import ResultList from "./components/ResultList";
 import ResultAlert from "./components/ResultAlert";
 import SettingDialog from "./components/SettingDialog";
-import img0 from "./images/img.jpg";
-import img1 from "./images/img1.png";
 
-const imageSources = [img0, img1];
+const imageSources = Array.from(Array(7)).map((v, i) =>
+  require(`./images/img0${i}.png`)
+);
 
 const defaultSettings = {
   mode: "text",
