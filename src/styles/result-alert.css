@@ -71,3 +71,12 @@
   padding: 6px;
   border-radius: 6px;
 }
+
+.hover-to-zoom {
+  transform: scale(1);
+  transition: transform 400ms;
+}
+
+.hover-to-zoom:hover {
+  transform: scale(1.5);
+}

@@ -70,9 +70,10 @@ function SettingDialog({
       }}
     >
       <img
+        className="hover-to-zoom"
         width="120px"
         src={imgSrc}
-        style={{ border: "solid 1px grey" }}
+        style={{ border: "solid 1px grey", backgroundColor: "#fff" }}
         alt=""
       />
       <div style={{ flexGrow: 1, textAlign: "left", paddingLeft: "12px" }}>
