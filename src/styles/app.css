@@ -22,3 +22,26 @@ table {
   border-radius: 8px;
   overflow: hidden;
 }
+
+.left-control {
+  position: fixed;
+  left: 0;
+  bottom: 12px;
+  border-bottom-right-radius: 24px;
+  border-top-right-radius: 24px;
+}
+
+.right-control {
+  position: fixed;
+  right: 0;
+  bottom: 12px;
+  border-bottom-left-radius: 24px;
+  border-top-left-radius: 24px;
+}
+
+.right-control, .left-control {
+  font-size: 14px;
+  padding: 6px 24px;
+  outline: none;
+  font-weight: bold;
+}

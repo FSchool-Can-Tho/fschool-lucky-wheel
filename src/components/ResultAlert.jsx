@@ -7,7 +7,7 @@ function ResultAlert({ prize, id, show, onHide }) {
       <div className={"dialog-content" + (show ? " show-up" : "")}>
         <h2 className="title">Chúc mừng!</h2>
         <p className="bigtext">{id}</p>
-        <p className="subtitle">Đã đạt {prize}</p>
+        {prize && <p className="subtitle">Đã đạt {prize}</p>}
         <button className="close-btn" onClick={onHide}>
           Đóng
         </button>
