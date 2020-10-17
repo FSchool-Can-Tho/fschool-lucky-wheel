@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "../styles/wheel.css";
 
-function Wheel({ list, onCompleted }) {
+function Wheel({ showTextLabel, list, onCompleted }) {
   const [state, setState] = useState({
     radius: 120, // PIXELS
     rotate: 0, // DEGREES
@@ -39,10 +39,12 @@ function Wheel({ list, onCompleted }) {
         baseSize + Math.sin(angle - arc / 2) * textRadius
       );
       ctx.rotate(angle - arc / 2);
-      ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
+      if (showTextLabel) {
+        ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
+      }
       ctx.restore();
     },
-    [state.radius]
+    [state.radius, showTextLabel]
   );
 
   const getColor = () => {
@@ -51,6 +53,13 @@ function Wheel({ list, onCompleted }) {
     let b = Math.floor(Math.random() * 125);
     return `rgba(${r + 120},${g + 120},${b + 120}, 1)`;
   };
+
+  const generateColorsList = useCallback((keylist) => {
+    const keys = Array.from(new Set(keylist));
+    const colors = {};
+    keys.map((key) => (colors[key] = getColor()));
+    return colors;
+  }, []);
 
   const spin = () => {
     const angle = (360 / (2 * Math.PI)) * state.angle;
@@ -84,13 +93,15 @@ function Wheel({ list, onCompleted }) {
       spinning: false,
     }));
 
+    const colors = generateColorsList(list);
     let angle = 0;
     for (let i = 0; i < numOptions; i++) {
       let text = list[i];
-      renderSector(i + 1, text, angle, arcSize, getColor());
+      let color = colors[text];
+      renderSector(i + 1, text, angle, arcSize, color);
       angle += arcSize;
     }
-  }, [renderSector, list]);
+  }, [renderSector, list, generateColorsList]);
 
   useEffect(() => {
     let canvas = document.getElementById("wheel");

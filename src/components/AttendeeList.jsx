@@ -23,7 +23,7 @@ function AttendeeList({ value, onChange }) {
       }}
     >
       <h3 style={{ marginBottom: 6 }}>
-        <strong>Danh sách người tham gia</strong>
+        <strong>Danh sách quay thưởng</strong>
       </h3>
       <p
         style={{
@@ -32,7 +32,7 @@ function AttendeeList({ value, onChange }) {
           margin: "6px 0px",
         }}
       >
-        <small>Mỗi người trên một dòng.</small>
+        <small>Mỗi mục trên một dòng.</small>
         <small>Đã nhập: {value.length}</small>
       </p>
       <div
@@ -57,8 +57,8 @@ function AttendeeList({ value, onChange }) {
           }}
           value={attendees}
           onChange={handleAttendeeChange}
-          placeholder="Nhập danh sách tham gia..."
-          title="Danh sách tham gia"
+          placeholder="Nhập danh sách quay thưởng..."
+          title="Danh sách quay thưởng"
         />
       </div>
     </div>

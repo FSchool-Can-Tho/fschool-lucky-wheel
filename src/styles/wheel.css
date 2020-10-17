@@ -8,7 +8,6 @@
   position: relative;
   padding-top: 24px;
   flex-grow: 1;
-  overflow: hidden;
 }
 
 #spin {

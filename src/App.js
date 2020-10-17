@@ -13,6 +13,7 @@ function App() {
   const [showAlert, setShowAlert] = useState(false);
   const [showLeft, setShowLeft] = useState(true);
   const [showRight, setShowRight] = useState(true);
+  const [showLabel, setShowLabel] = useState(true);
 
   useEffect(() => {
     setAttendee(JSON.parse(localStorage.getItem("attendee") || "[]"));
@@ -47,7 +48,7 @@ function App() {
       <div
         style={{
           display: "flex",
-          justifyContent: "space-evenly",
+          justifyContent: "center",
           height: "90vh",
           paddingRight: 12,
           paddingLeft: 12,
@@ -56,9 +57,12 @@ function App() {
       >
         <div
           style={{
-            position: "relative",
+            position: "fixed",
+            top: "12px",
+            bottom: "72px",
             transition: "left 400ms",
-            left: showLeft ? "0px" : "-360px",
+            zIndex: 9,
+            left: showLeft ? "12px" : "-360px",
           }}
         >
           <AttendeeList
@@ -66,12 +70,20 @@ function App() {
             onChange={(list) => setAttendee(list)}
           />
         </div>
-        <Wheel list={attendee} loop={prize.count} onCompleted={handleResult} />
+        <Wheel
+          list={attendee}
+          loop={prize.count}
+          showTextLabel={showLabel}
+          onCompleted={handleResult}
+        />
         <div
           style={{
-            position: "relative",
+            position: "fixed",
+            top: "12px",
+            bottom: "72px",
+            zIndex: 9,
             transition: "right 400ms",
-            right: showRight ? "0px" : "-360px",
+            right: showRight ? "12px" : "-360px",
           }}
         >
           <div
@@ -93,15 +105,26 @@ function App() {
         onHide={() => handleCloseAlert(showAlert && showAlert.index)}
         prize={prize.name}
       />
-      <button className="left-control" onClick={() => setShowLeft(!showLeft)}>
-        {showLeft ? "<< Ẩn" : "Hiện >>"}
-      </button>
-      <button
-        className="right-control"
-        onClick={() => setShowRight(!showRight)}
-      >
-        {showRight ? "Ẩn >>" : "<< Hiện"}
-      </button>
+      <div className="toolbar">
+        <button className="left-control" onClick={() => setShowLeft(!showLeft)}>
+          {showLeft ? "<< Ẩn" : "Hiện >>"}
+        </button>
+        <div>
+          <button className="setting-btn">Tùy chỉnh kết quả</button>
+          <button
+            className="setting-btn"
+            onClick={() => setShowLabel(!showLabel)}
+          >
+            {showLabel ? "Ẩn" : "Hiện"} nhãn trên vòng
+          </button>
+        </div>
+        <button
+          className="right-control"
+          onClick={() => setShowRight(!showRight)}
+        >
+          {showRight ? "Ẩn >>" : "<< Hiện"}
+        </button>
+      </div>
     </>
   );
 }

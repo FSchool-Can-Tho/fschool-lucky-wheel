@@ -23,25 +23,33 @@ table {
   overflow: hidden;
 }
 
-.left-control {
+.toolbar {
   position: fixed;
   left: 0;
+  right: 0;
   bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-control {
   border-bottom-right-radius: 24px;
   border-top-right-radius: 24px;
 }
 
 .right-control {
-  position: fixed;
-  right: 0;
-  bottom: 12px;
   border-bottom-left-radius: 24px;
   border-top-left-radius: 24px;
 }
 
-.right-control, .left-control {
+.right-control, .left-control, .setting-btn {
   font-size: 14px;
   padding: 6px 24px;
   outline: none;
   font-weight: bold;
+  min-width: 110px;
+}
+
+.setting-btn {
+  border-radius: 24px;
 }
