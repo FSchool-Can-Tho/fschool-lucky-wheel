@@ -100,7 +100,7 @@ function ResultList({ data = [], onChange }) {
               <span
                 style={{
                   padding: "3px 6px",
-                  overflowWrap: 'break-word'
+                  overflowWrap: "break-word",
                 }}
               >
                 {id}

@@ -44,7 +44,7 @@ function PrizeList({ value, onChange }) {
           }}
         />
         <input
-          value={value.count}
+          value={value.count || 0}
           onChange={handleChange("count")}
           placeholder="Số lượng"
           title="Số lượng giải"

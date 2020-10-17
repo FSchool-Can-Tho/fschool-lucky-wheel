@@ -5,6 +5,19 @@ import AttendeeList from "./components/AttendeeList";
 import PrizeList from "./components/PrizeList";
 import ResultList from "./components/ResultList";
 import ResultAlert from "./components/ResultAlert";
+import SettingDialog from "./components/SettingDialog";
+import img0 from "./images/img.jpg";
+import img1 from "./images/img1.png";
+
+const imageSources = [img0, img1];
+
+const defaultSettings = {
+  mode: "text",
+  attendeePrefix: "",
+  prizePrefix: "Đã đạt",
+  imageKeys: imageSources.map(() => ""),
+  imageSources,
+};
 
 function App() {
   const [attendee, setAttendee] = useState([""]);
@@ -14,18 +27,30 @@ function App() {
   const [showLeft, setShowLeft] = useState(true);
   const [showRight, setShowRight] = useState(true);
   const [showLabel, setShowLabel] = useState(true);
+  const [showSetting, setShowSetting] = useState(false);
+  const [settings, setSettings] = useState(defaultSettings);
 
   useEffect(() => {
     setAttendee(JSON.parse(localStorage.getItem("attendee") || "[]"));
     setPrize(JSON.parse(localStorage.getItem("prize") || "{}"));
     setResult(JSON.parse(localStorage.getItem("result") || "[]"));
+    setShowLeft(JSON.parse(localStorage.getItem("showLeft") || true));
+    setShowRight(JSON.parse(localStorage.getItem("showRight") || true));
+    setShowLabel(JSON.parse(localStorage.getItem("showLabel") || true));
+    if (localStorage.getItem("settings")) {
+      setSettings(JSON.parse(localStorage.getItem("settings")));
+    }
   }, []);
 
   useEffect(() => {
     localStorage.setItem("attendee", JSON.stringify(attendee));
     localStorage.setItem("prize", JSON.stringify(prize));
     localStorage.setItem("result", JSON.stringify(result));
-  }, [attendee, prize, result]);
+    localStorage.setItem("showLeft", JSON.stringify(showLeft));
+    localStorage.setItem("showRight", JSON.stringify(showRight));
+    localStorage.setItem("showLabel", JSON.stringify(showLabel));
+    localStorage.setItem("settings", JSON.stringify(settings));
+  }, [attendee, prize, result, showLabel, showLeft, showRight, settings]);
 
   const handleResult = (index) => {
     setResult((prevResult) => [
@@ -99,18 +124,38 @@ function App() {
           </div>
         </div>
       </div>
-      <ResultAlert
-        id={showAlert && showAlert.id}
-        show={!!showAlert}
-        onHide={() => handleCloseAlert(showAlert && showAlert.index)}
-        prize={prize.name}
-      />
+      {!!showAlert && (
+        <ResultAlert
+          id={showAlert && showAlert.id}
+          show={!!showAlert}
+          onHide={() => handleCloseAlert(showAlert && showAlert.index)}
+          prize={prize.name}
+          settings={settings}
+        />
+      )}
+      {showSetting && (
+        <SettingDialog
+          currentSettings={settings}
+          onChange={(value) => setSettings(value)}
+          show={showSetting}
+          onHide={() => setShowSetting(false)}
+          onReset={() => {
+            setShowSetting(false);
+            setSettings(defaultSettings);
+          }}
+        />
+      )}
       <div className="toolbar">
         <button className="left-control" onClick={() => setShowLeft(!showLeft)}>
           {showLeft ? "<< Ẩn" : "Hiện >>"}
         </button>
         <div>
-          <button className="setting-btn">Tùy chỉnh kết quả</button>
+          <button
+            className="setting-btn"
+            onClick={() => setShowSetting(!showSetting)}
+          >
+            Tùy chỉnh kết quả
+          </button>
           <button
             className="setting-btn"
             onClick={() => setShowLabel(!showLabel)}

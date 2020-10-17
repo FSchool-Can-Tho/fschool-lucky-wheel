@@ -4,6 +4,7 @@
   left: 0px;
   right: 0px;
   bottom: 0px;
+  padding-bottom: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,7 +19,6 @@
   background-color: white;
   min-width: 300px;
   position: relative;
-  top: -64px;
   border-radius: 32px;
   box-shadow: 5px 10px 10px #888888;
   overflow: hidden;
@@ -39,6 +39,7 @@
   color: green;
   font-weight: bold;
   font-size: 14px;
+  margin-top: 12px;
 }
 
 .close-btn:hover {
@@ -64,4 +65,9 @@
   font-weight: bold;
   margin: 12px;
   margin-bottom: 18px;
+}
+
+.input-control {
+  padding: 6px;
+  border-radius: 6px;
 }
