@@ -286,6 +286,7 @@ function App() {
               value={sessionId}
               onChange={(e) => setSessionId(e.target.value)}
               type="number"
+              placeholder="code"
             />
           </div>
         </div>
