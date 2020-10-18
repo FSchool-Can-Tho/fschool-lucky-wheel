@@ -21,8 +21,8 @@ const defaultSettings = {
 };
 
 function App() {
-  const sessionId = "test";
   const isAuth = true;
+  const [sessionId, setSessionId] = useState("0000");
   const { db, serverValue } = useContext(FirebaseContext);
   const [state, setState] = useState({
     attendee: [""],
@@ -278,9 +278,16 @@ function App() {
           >
             {showLabel ? "Ẩn" : "Hiện"} nhãn trên vòng
           </button>
-          <button className="setting-btn" onClick={syncData}>
-            Đồng bộ dữ liệu
-          </button>
+          <div className="input-group">
+            <button onClick={syncData}>
+              Đồng bộ
+            </button>
+            <input
+              value={sessionId}
+              onChange={(e) => setSessionId(e.target.value)}
+              type="number"
+            />
+          </div>
         </div>
         <button
           className="right-control"
