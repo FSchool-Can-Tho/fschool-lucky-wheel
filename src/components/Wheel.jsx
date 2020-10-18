@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "../styles/wheel.css";
 
-function Wheel({ showTextLabel, list, onCompleted }) {
+function Wheel({ showTextLabel, list, onCompleted, onResult, syncData }) {
   const [state, setState] = useState({
     radius: 120, // PIXELS
     rotate: 0, // DEGREES
@@ -10,6 +10,12 @@ function Wheel({ showTextLabel, list, onCompleted }) {
     result: null, // INDEX
     spinning: false,
   });
+
+  const cleanUp = () => {
+    let canvas = document.getElementById("wheel");
+    let ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
 
   const renderSector = useCallback(
     (index, text, start, arc, color) => {
@@ -61,28 +67,9 @@ function Wheel({ showTextLabel, list, onCompleted }) {
     return colors;
   }, []);
 
-  const spin = () => {
-    const angle = (360 / (2 * Math.PI)) * state.angle;
-    const random = Math.floor(Math.random() * list.length);
-    const spinAngle = 360 * 3 + angle * random;
-    setState((prevState) => ({
-      ...prevState,
-      rotate: prevState.rotate + spinAngle,
-      easeOut: 2,
-      spinning: true,
-    }));
-    setTimeout(() => {
-      setState((prevState) => ({
-        ...prevState,
-        result: (prevState.result + random) % list.length,
-        spinning: false,
-      }));
-      onCompleted((state.result + random) % list.length);
-    }, 2000);
-  };
-
-  const renderWheel = useCallback(() => {
-    let numOptions = list.length;
+  const renderWheelByList = useCallback((listdata) => {
+    cleanUp();
+    let numOptions = listdata.length;
     let arcSize = (2 * Math.PI) / numOptions;
     setState((prevState) => ({
       ...prevState,
@@ -93,22 +80,46 @@ function Wheel({ showTextLabel, list, onCompleted }) {
       spinning: false,
     }));
 
-    const colors = generateColorsList(list);
+    const colors = generateColorsList(listdata);
     let angle = 0;
     for (let i = 0; i < numOptions; i++) {
-      let text = list[i];
+      let text = listdata[i];
       let color = colors[text];
       renderSector(i + 1, text, angle, arcSize, color);
       angle += arcSize;
     }
-  }, [renderSector, list, generateColorsList]);
+  }, [generateColorsList, renderSector]);
+
+  const spin = async () => {
+    const data = await syncData();
+    const listdata = data.filter((elem) => elem.split("/")[1] > 0);
+    if (listdata.length === 0) return;
+    renderWheelByList(listdata);
+    const angle = (360 / (2 * Math.PI)) * state.angle;
+    const random = Math.floor(Math.random() * listdata.length);
+    const spinAngle = 360 * 3 + angle * random;
+    const resultIndex = (state.result + random) % listdata.length;
+    const realIndex = data.indexOf(listdata[resultIndex]);
+    onResult(realIndex);
+    setState((prevState) => ({
+      ...prevState,
+      rotate: prevState.rotate + spinAngle,
+      easeOut: 2,
+      spinning: true,
+    }));
+    setTimeout(() => {
+      setState((prevState) => ({
+        ...prevState,
+        result: (prevState.result + random) % listdata.length,
+        spinning: false,
+      }));
+      onCompleted(realIndex);
+    }, 2000);
+  };
 
   useEffect(() => {
-    let canvas = document.getElementById("wheel");
-    let ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    renderWheel();
-  }, [renderWheel]);
+    renderWheelByList(list.filter((elem) => elem.split("/")[1] > 0));
+  }, [list, renderWheelByList]);
 
   return (
     <div className="wheel-wrapper">

@@ -20,7 +20,9 @@ export const FirebaseContext = createContext({ db });
 
 function FirebaseProvider({ children }) {
   return (
-    <FirebaseContext.Provider value={{ db }}>
+    <FirebaseContext.Provider
+      value={{ db, serverValue: firebase.database.ServerValue }}
+    >
       {children}
     </FirebaseContext.Provider>
   );

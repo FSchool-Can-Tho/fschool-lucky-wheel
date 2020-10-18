@@ -23,7 +23,7 @@ const defaultSettings = {
 function App() {
   const sessionId = "test";
   const isAuth = true;
-  const { db } = useContext(FirebaseContext);
+  const { db, serverValue } = useContext(FirebaseContext);
   const [state, setState] = useState({
     attendee: [""],
     prize: { name: "", count: 1 },
@@ -38,8 +38,8 @@ function App() {
 
   const {
     attendee,
-    prize,
     result,
+    prize,
     showLabel,
     showLeft,
     showRight,
@@ -53,37 +53,36 @@ function App() {
     }));
   };
 
-  if (isAuth) {
-    db.ref(sessionId).on("value", function (snapshot) {});
-  }
-
   const saveOnCloud = useCallback(() => {
-    db.ref(sessionId).set(state);
-  }, [db, state]);
+    db.ref(sessionId).update({
+      prize,
+      showLabel,
+      showLeft,
+      showRight,
+      settings,
+    });
+  }, [db, prize, showLabel, showLeft, showRight, settings]);
 
   const saveOnLocal = useCallback(() => {
     localStorage.setItem(sessionId, JSON.stringify(state));
   }, [state]);
 
-  useEffect(() => {
+  const readFromLocal = useCallback(() => {
     const localState = localStorage.getItem(sessionId);
     if (localState) {
-      setState(JSON.parse(localState));
+      setState((prevState) => ({
+        ...prevState,
+        ...JSON.parse(localState),
+      }));
     }
   }, []);
-
-  useEffect(() => {
-    if (isAuth) {
-      saveOnCloud();
-    }
-    saveOnLocal();
-  }, [isAuth, saveOnCloud, saveOnLocal]);
 
   const updateAttendee = (index) => {
     const [value, count = 1] = attendee[index].split("/");
     if (count <= 1 || isNaN(count * 1)) {
       handleChangeState("attendee")([
         ...attendee.slice(0, index),
+        `${value}/${0}`,
         ...attendee.slice(index + 1),
       ]);
     } else {
@@ -95,7 +94,8 @@ function App() {
     }
   };
 
-  const handleResult = (index) => {
+  const handleFinishSpin = (index) => {
+    setShowAlert({ id: attendee[index].split("/")[0], index });
     updateAttendee(index);
     handleChangeState("result")([
       ...result,
@@ -104,12 +104,72 @@ function App() {
         prize: prize.name || new Date().toLocaleString("vi-VN"),
       },
     ]);
-    setShowAlert({ id: attendee[index].split("/")[0], index });
+  };
+
+  const handleResult = (index) => {
+    if (isAuth) {
+      db.ref(sessionId)
+        .child("resultList")
+        .push({
+          id: attendee[index].split("/")[0],
+          prize: prize.name || new Date().toLocaleString("vi-VN"),
+        });
+      db.ref(sessionId)
+        .child("attendeeList")
+        .child(`${index}`)
+        .child("count")
+        .set(serverValue.increment(-1));
+    }
   };
 
   const handleCloseAlert = (index) => {
     setShowAlert(null);
+    syncData();
   };
+
+  const uploadAttendees = () => {
+    const attendeeList = attendee
+      .filter((elem) => !!elem)
+      .map((elem) => {
+        const [name, count = 1] = elem.split("/");
+        if (isNaN(count * 1)) {
+          return { name, count: 1 };
+        }
+        return { name, count: count * 1 };
+      });
+    db.ref(sessionId).update({ attendeeList });
+  };
+
+  const syncData = async () => {
+    const snapshot = await db.ref(sessionId).once("value");
+    const { attendeeList, resultList, ...data } = snapshot.val() || {};
+    if (!attendeeList) {
+      uploadAttendees();
+    } else {
+      data.attendee = attendeeList.map((elem) => `${elem.name}/${elem.count}`);
+    }
+    data.result = resultList ? Object.values(resultList) : [];
+    setState((prevState) => ({
+      ...prevState,
+      ...data,
+    }));
+    return data.attendee || attendee;
+  };
+
+  useEffect(() => {
+    if (isAuth) {
+      syncData();
+    } else {
+      readFromLocal();
+    }
+  }, [db, isAuth, readFromLocal]);
+
+  useEffect(() => {
+    if (isAuth) {
+      saveOnCloud();
+    }
+    saveOnLocal();
+  }, [isAuth, saveOnCloud, saveOnLocal]);
 
   return (
     <>
@@ -144,7 +204,9 @@ function App() {
           list={attendee}
           loop={prize.count}
           showTextLabel={showLabel}
-          onCompleted={handleResult}
+          onCompleted={handleFinishSpin}
+          onResult={handleResult}
+          syncData={syncData}
         />
         <div
           style={{
@@ -215,6 +277,9 @@ function App() {
             onClick={() => handleChangeState("showLabel")(!showLabel)}
           >
             {showLabel ? "Ẩn" : "Hiện"} nhãn trên vòng
+          </button>
+          <button className="setting-btn" onClick={syncData}>
+            Đồng bộ dữ liệu
           </button>
         </div>
         <button
