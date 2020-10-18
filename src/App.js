@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import Wheel from "./components/Wheel";
 import "./styles/app.css";
 import AttendeeList from "./components/AttendeeList";
@@ -6,6 +6,7 @@ import PrizeList from "./components/PrizeList";
 import ResultList from "./components/ResultList";
 import ResultAlert from "./components/ResultAlert";
 import SettingDialog from "./components/SettingDialog";
+import { FirebaseContext } from "./FirebaseProvider";
 
 const imageSources = Array.from(Array(7)).map((v, i) =>
   require(`./images/img0${i}.png`)
@@ -20,51 +21,93 @@ const defaultSettings = {
 };
 
 function App() {
-  const [attendee, setAttendee] = useState([""]);
-  const [prize, setPrize] = useState({ name: "", count: 1 });
-  const [result, setResult] = useState([]);
-  const [showAlert, setShowAlert] = useState(false);
-  const [showLeft, setShowLeft] = useState(true);
-  const [showRight, setShowRight] = useState(true);
-  const [showLabel, setShowLabel] = useState(true);
+  const sessionId = "test";
+  const isAuth = true;
+  const { db } = useContext(FirebaseContext);
+  const [state, setState] = useState({
+    attendee: [""],
+    prize: { name: "", count: 1 },
+    result: [],
+    showLabel: true,
+    showLeft: true,
+    showRight: true,
+    settings: defaultSettings,
+  });
   const [showSetting, setShowSetting] = useState(false);
-  const [settings, setSettings] = useState(defaultSettings);
+  const [showAlert, setShowAlert] = useState(false);
+
+  const {
+    attendee,
+    prize,
+    result,
+    showLabel,
+    showLeft,
+    showRight,
+    settings,
+  } = state;
+
+  const handleChangeState = (name) => (value) => {
+    setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  if (isAuth) {
+    db.ref(sessionId).on("value", function (snapshot) {});
+  }
+
+  const saveOnCloud = useCallback(() => {
+    db.ref(sessionId).set(state);
+  }, [db, state]);
+
+  const saveOnLocal = useCallback(() => {
+    localStorage.setItem(sessionId, JSON.stringify(state));
+  }, [state]);
 
   useEffect(() => {
-    setAttendee(JSON.parse(localStorage.getItem("attendee") || "[]"));
-    setPrize(JSON.parse(localStorage.getItem("prize") || "{}"));
-    setResult(JSON.parse(localStorage.getItem("result") || "[]"));
-    setShowLeft(JSON.parse(localStorage.getItem("showLeft") || true));
-    setShowRight(JSON.parse(localStorage.getItem("showRight") || true));
-    setShowLabel(JSON.parse(localStorage.getItem("showLabel") || true));
-    if (localStorage.getItem("settings")) {
-      setSettings(JSON.parse(localStorage.getItem("settings")));
+    const localState = localStorage.getItem(sessionId);
+    if (localState) {
+      setState(JSON.parse(localState));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("attendee", JSON.stringify(attendee));
-    localStorage.setItem("prize", JSON.stringify(prize));
-    localStorage.setItem("result", JSON.stringify(result));
-    localStorage.setItem("showLeft", JSON.stringify(showLeft));
-    localStorage.setItem("showRight", JSON.stringify(showRight));
-    localStorage.setItem("showLabel", JSON.stringify(showLabel));
-    localStorage.setItem("settings", JSON.stringify(settings));
-  }, [attendee, prize, result, showLabel, showLeft, showRight, settings]);
+    if (isAuth) {
+      saveOnCloud();
+    }
+    saveOnLocal();
+  }, [isAuth, saveOnCloud, saveOnLocal]);
+
+  const updateAttendee = (index) => {
+    const [value, count = 1] = attendee[index].split("/");
+    if (count <= 1 || isNaN(count * 1)) {
+      handleChangeState("attendee")([
+        ...attendee.slice(0, index),
+        ...attendee.slice(index + 1),
+      ]);
+    } else {
+      handleChangeState("attendee")([
+        ...attendee.slice(0, index),
+        `${value}/${count - 1}`,
+        ...attendee.slice(index + 1),
+      ]);
+    }
+  };
 
   const handleResult = (index) => {
-    setResult((prevResult) => [
-      ...prevResult,
-      { id: attendee[index], prize: prize.name },
+    updateAttendee(index);
+    handleChangeState("result")([
+      ...result,
+      {
+        id: attendee[index].split("/")[0],
+        prize: prize.name || new Date().toLocaleString("vi-VN"),
+      },
     ]);
-    setShowAlert({ id: attendee[index], index });
+    setShowAlert({ id: attendee[index].split("/")[0], index });
   };
 
   const handleCloseAlert = (index) => {
-    setAttendee([
-      ...attendee.slice(0, index),
-      ...attendee.slice(index + 1, attendee.length),
-    ]);
     setShowAlert(null);
   };
 
@@ -92,7 +135,9 @@ function App() {
         >
           <AttendeeList
             value={attendee}
-            onChange={(list) => setAttendee(list)}
+            onChange={(data) => {
+              handleChangeState("attendee")(data);
+            }}
           />
         </div>
         <Wheel
@@ -119,8 +164,14 @@ function App() {
               minWidth: "300px",
             }}
           >
-            <PrizeList value={prize} onChange={(value) => setPrize(value)} />
-            <ResultList data={result} onChange={(value) => setResult(value)} />
+            <PrizeList
+              value={prize}
+              onChange={(value) => handleChangeState("prize")(value)}
+            />
+            <ResultList
+              data={result}
+              onChange={(value) => handleChangeState("result")(value)}
+            />
           </div>
         </div>
       </div>
@@ -136,17 +187,20 @@ function App() {
       {showSetting && (
         <SettingDialog
           currentSettings={settings}
-          onChange={(value) => setSettings(value)}
+          onChange={(value) => handleChangeState("settings")(value)}
           show={showSetting}
           onHide={() => setShowSetting(false)}
           onReset={() => {
             setShowSetting(false);
-            setSettings(defaultSettings);
+            handleChangeState("settings")(defaultSettings);
           }}
         />
       )}
       <div className="toolbar">
-        <button className="left-control" onClick={() => setShowLeft(!showLeft)}>
+        <button
+          className="left-control"
+          onClick={() => handleChangeState("showLeft")(!showLeft)}
+        >
           {showLeft ? "<< Ẩn" : "Hiện >>"}
         </button>
         <div>
@@ -158,14 +212,14 @@ function App() {
           </button>
           <button
             className="setting-btn"
-            onClick={() => setShowLabel(!showLabel)}
+            onClick={() => handleChangeState("showLabel")(!showLabel)}
           >
             {showLabel ? "Ẩn" : "Hiện"} nhãn trên vòng
           </button>
         </div>
         <button
           className="right-control"
-          onClick={() => setShowRight(!showRight)}
+          onClick={() => handleChangeState("showRight")(!showRight)}
         >
           {showRight ? "Ẩn >>" : "<< Hiện"}
         </button>

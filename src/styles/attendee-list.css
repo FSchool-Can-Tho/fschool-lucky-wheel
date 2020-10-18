@@ -1,0 +1,9 @@
+.apply-btn {
+  background-color: rgb(215, 248, 150);
+  color: rgb(4, 112, 0);
+}
+
+.apply-btn:hover {
+    color: rgb(215, 248, 150);
+    background-color: rgb(4, 112, 0);
+  }

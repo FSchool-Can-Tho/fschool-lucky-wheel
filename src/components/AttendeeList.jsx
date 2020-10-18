@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
+import "../styles/attendee-list.css";
 
 function AttendeeList({ value, onChange }) {
-  const [attendees, setAttendees] = useState();
+  const [text, setText] = useState();
 
-  const handleAttendeeChange = (e) => {
-    setAttendees(e.target.value);
+  const handleTextChange = (e) => {
+    setText(e.target.value);
     onChange(e.target.value.split("\n"));
   };
 
+  // const handleSubmit = () => {
+  //   onChange(text.split("\n"));
+  // };
+
   useEffect(() => {
-    setAttendees(value.join("\n"));
+    setText(value.join("\n"));
   }, [value]);
 
   return (
@@ -42,6 +47,7 @@ function AttendeeList({ value, onChange }) {
           overflow: "hidden",
           width: "100%",
           paddingRight: 12,
+          position: "relative",
         }}
       >
         <textarea
@@ -55,11 +61,29 @@ function AttendeeList({ value, onChange }) {
             fontSize: 18,
             overflow: "scroll",
           }}
-          value={attendees}
-          onChange={handleAttendeeChange}
+          value={text}
+          onChange={handleTextChange}
           placeholder="Nhập danh sách quay thưởng..."
           title="Danh sách quay thưởng"
         />
+        {/* <button
+          onClick={handleSubmit}
+          className="apply-btn"
+          style={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            fontSize: "14px",
+            padding: "6px 24px",
+            outline: "none",
+            fontWeight: "bold",
+            borderTopLeftRadius: "12px",
+            borderBottomRightRadius: "12px",
+            border: "solid 1px white",
+          }}
+        >
+          {"Áp dụng >"}
+        </button> */}
       </div>
     </div>
   );

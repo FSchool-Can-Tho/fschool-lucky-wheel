@@ -29,7 +29,7 @@ function PrizeList({ value, onChange }) {
         }}
       >
         <input
-          value={value.name}
+          value={value.name || ""}
           onChange={handleChange("name")}
           placeholder="Tên giải thưởng"
           title="Tên giải thưởng"
