@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "../styles/wheel.css";
 
-function Wheel({ showTextLabel, list, onCompleted, syncData }) {
+function Wheel({ showTextLabel, list, onCompleted }) {
   const [state, setState] = useState({
     radius: 120, // PIXELS
     rotate: 0, // DEGREES
@@ -67,31 +67,40 @@ function Wheel({ showTextLabel, list, onCompleted, syncData }) {
     return colors;
   }, []);
 
-  const renderWheelByList = useCallback((listdata) => {
-    cleanUp();
-    let numOptions = listdata.length;
-    let arcSize = (2 * Math.PI) / numOptions;
-    setState((prevState) => ({
-      ...prevState,
-      angle: arcSize,
-      result: Math.floor(Math.PI / 2 / arcSize),
-      rotate: 0,
-      easeOut: 0,
-      spinning: false,
-    }));
+  const renderWheelByList = useCallback(
+    (listdata) => {
+      cleanUp();
+      let numOptions = listdata.length;
+      if (!numOptions) return;
+      let arcSize = (2 * Math.PI) / numOptions;
+      setState((prevState) => {
+        return {
+          ...prevState,
+          angle: arcSize,
+          result:
+            prevState.result !== null
+              ? prevState.result
+              : Math.floor(Math.PI / 2 / arcSize),
+          rotate: prevState.rotate || 0,
+          easeOut: 0,
+          spinning: false,
+        };
+      });
 
-    const colors = generateColorsList(listdata);
-    let angle = 0;
-    for (let i = 0; i < numOptions; i++) {
-      let text = listdata[i];
-      let color = colors[text];
-      renderSector(i + 1, text, angle, arcSize, color);
-      angle += arcSize;
-    }
-  }, [generateColorsList, renderSector]);
+      const colors = generateColorsList(listdata);
+      let angle = 0;
+      for (let i = 0; i < numOptions; i++) {
+        let text = listdata[i];
+        let color = colors[text];
+        renderSector(i + 1, text, angle, arcSize, color);
+        angle += arcSize;
+      }
+    },
+    [generateColorsList, renderSector]
+  );
 
   const spin = async () => {
-    const data = await syncData();
+    const data = list;
     const listdata = data.filter((elem) => elem.split("/")[1] > 0);
     if (listdata.length === 0) return;
     renderWheelByList(listdata);
@@ -109,7 +118,7 @@ function Wheel({ showTextLabel, list, onCompleted, syncData }) {
     setTimeout(() => {
       setState((prevState) => ({
         ...prevState,
-        result: (prevState.result + random) % listdata.length,
+        result: realIndex,
         spinning: false,
       }));
       onCompleted(realIndex);

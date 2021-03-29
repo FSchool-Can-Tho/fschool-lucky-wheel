@@ -139,7 +139,6 @@ function App() {
           loop={prize.count}
           showTextLabel={showLabel}
           onCompleted={handleFinishSpin}
-          syncData={() => attendee}
         />
         <div
           style={{
