@@ -7,8 +7,8 @@ import ResultList from "./components/ResultList";
 import ResultAlert from "./components/ResultAlert";
 import SettingDialog from "./components/SettingDialog";
 
-const imageSources = Array.from(Array(3)).map((v, i) =>
-  require(`./images/img0${i}.png`)
+const imageSources = Array.from(Array(2)).map((v, i) =>
+  `/lucky-spin/images/img0${i}.png`
 );
 
 const defaultSettings = {
