@@ -27,7 +27,7 @@ function SettingDialog({
 
   useEffect(() => {
     onChange(state);
-  }, [state, onChange]);
+  }, [state]);
 
   const textOptions = (
     <>

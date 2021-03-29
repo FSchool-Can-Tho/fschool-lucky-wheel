@@ -1,14 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import FirebaseProvider from "./FirebaseProvider";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <React.StrictMode>
-    <FirebaseProvider>
-      <App />
-    </FirebaseProvider>
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

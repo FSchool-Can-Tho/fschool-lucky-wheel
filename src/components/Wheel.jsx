@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "../styles/wheel.css";
 
-function Wheel({ showTextLabel, list, onCompleted, onResult, syncData }) {
+function Wheel({ showTextLabel, list, onCompleted, syncData }) {
   const [state, setState] = useState({
     radius: 120, // PIXELS
     rotate: 0, // DEGREES
@@ -100,7 +100,6 @@ function Wheel({ showTextLabel, list, onCompleted, onResult, syncData }) {
     const spinAngle = 360 * 3 + angle * random;
     const resultIndex = (state.result + random) % listdata.length;
     const realIndex = data.indexOf(listdata[resultIndex]);
-    onResult(realIndex);
     setState((prevState) => ({
       ...prevState,
       rotate: prevState.rotate + spinAngle,

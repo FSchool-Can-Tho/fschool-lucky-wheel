@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Wheel from "./components/Wheel";
 import "./styles/app.css";
 import AttendeeList from "./components/AttendeeList";
@@ -6,7 +6,6 @@ import PrizeList from "./components/PrizeList";
 import ResultList from "./components/ResultList";
 import ResultAlert from "./components/ResultAlert";
 import SettingDialog from "./components/SettingDialog";
-import { FirebaseContext } from "./FirebaseProvider";
 
 const imageSources = Array.from(Array(7)).map((v, i) =>
   require(`./images/img0${i}.png`)
@@ -21,9 +20,7 @@ const defaultSettings = {
 };
 
 function App() {
-  const isAuth = true;
-  const [sessionId, setSessionId] = useState("0000");
-  const { db, serverValue } = useContext(FirebaseContext);
+  const sessionId = "luckylucky";
   const [state, setState] = useState({
     attendee: [""],
     prize: { name: "", count: 1 },
@@ -52,16 +49,6 @@ function App() {
       [name]: value,
     }));
   };
-
-  const saveOnCloud = useCallback(() => {
-    db.ref(sessionId).update({
-      prize,
-      showLabel,
-      showLeft,
-      showRight,
-      settings,
-    });
-  }, [db, prize, showLabel, showLeft, showRight, settings]);
 
   const saveOnLocal = useCallback(() => {
     localStorage.setItem(sessionId, JSON.stringify(state));
@@ -106,70 +93,17 @@ function App() {
     ]);
   };
 
-  const handleResult = (index) => {
-    if (isAuth) {
-      db.ref(sessionId)
-        .child("resultList")
-        .push({
-          id: attendee[index].split("/")[0],
-          prize: prize.name || new Date().toLocaleString("vi-VN"),
-        });
-      db.ref(sessionId)
-        .child("attendeeList")
-        .child(`${index}`)
-        .child("count")
-        .set(serverValue.increment(-1));
-    }
-  };
-
   const handleCloseAlert = (index) => {
     setShowAlert(null);
-    syncData();
-  };
-
-  const uploadAttendees = () => {
-    const attendeeList = attendee
-      .filter((elem) => !!elem)
-      .map((elem) => {
-        const [name, count = 1] = elem.split("/");
-        if (isNaN(count * 1)) {
-          return { name, count: 1 };
-        }
-        return { name, count: count * 1 };
-      });
-    db.ref(sessionId).update({ attendeeList });
-  };
-
-  const syncData = async () => {
-    const snapshot = await db.ref(sessionId).once("value");
-    const { attendeeList, resultList, ...data } = snapshot.val() || {};
-    if (!attendeeList) {
-      uploadAttendees();
-    } else {
-      data.attendee = attendeeList.map((elem) => `${elem.name}/${elem.count}`);
-    }
-    data.result = resultList ? Object.values(resultList) : [];
-    setState((prevState) => ({
-      ...prevState,
-      ...data,
-    }));
-    return data.attendee || attendee;
   };
 
   useEffect(() => {
-    if (isAuth) {
-      syncData();
-    } else {
-      readFromLocal();
-    }
-  }, [db, isAuth, readFromLocal]);
+    readFromLocal();
+  }, [readFromLocal]);
 
   useEffect(() => {
-    if (isAuth) {
-      saveOnCloud();
-    }
     saveOnLocal();
-  }, [isAuth, saveOnCloud, saveOnLocal]);
+  }, [saveOnLocal]);
 
   return (
     <>
@@ -205,8 +139,7 @@ function App() {
           loop={prize.count}
           showTextLabel={showLabel}
           onCompleted={handleFinishSpin}
-          onResult={handleResult}
-          syncData={syncData}
+          syncData={() => attendee}
         />
         <div
           style={{
@@ -278,17 +211,6 @@ function App() {
           >
             {showLabel ? "Ẩn" : "Hiện"} nhãn trên vòng
           </button>
-          <div className="input-group">
-            <button onClick={syncData}>
-              Đồng bộ
-            </button>
-            <input
-              value={sessionId}
-              onChange={(e) => setSessionId(e.target.value)}
-              type="number"
-              placeholder="code"
-            />
-          </div>
         </div>
         <button
           className="right-control"
